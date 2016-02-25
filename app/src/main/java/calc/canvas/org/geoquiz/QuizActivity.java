@@ -13,6 +13,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
+    private Button mPrevButton;
     private TextView mQuestionTextView;
 
     private Question[] mQuestionBank = new Question[] {
@@ -33,13 +34,13 @@ public class QuizActivity extends AppCompatActivity {
         mQuestionTextView =(TextView) findViewById(R.id.question_text_view);
 
         //Get first question
-        updateQuestion();
+        updateQuestion(1);
 
         //Display next question whenver the user clicks the textbox
         mQuestionTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                updateQuestion();
+                updateQuestion(1);
             }
         });
 
@@ -63,16 +64,30 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                //mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                updateQuestion();
+                updateQuestion(1);
+            }
+        });
+
+        mPrevButton = (Button) findViewById(R.id.prev_button);
+        mPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                updateQuestion(-1);
             }
         });
     }
 
-    //Updates the question
-    private void updateQuestion(){
-        //increments to next question
-        mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+    /**
+     * Updates to the next question
+     * @param i Used to determine whether or not to go to previous question or next. i can only be a -1 or 1
+     */
+    private void updateQuestion(int i){
+        //loops array back to beginning if decrementing
+        if(i == -1 && mCurrentIndex == 1)
+            mCurrentIndex = mQuestionBank.length - 1;
+
+        //increments or decrements the index
+        mCurrentIndex = (mCurrentIndex + i) % mQuestionBank.length;
 
         //gets the text of the next question
         int question = mQuestionBank[mCurrentIndex].getTextResId();
