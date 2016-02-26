@@ -14,6 +14,7 @@ import android.widget.Toast;
 public class QuizActivity extends AppCompatActivity {
 
     private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX = "index";
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -38,8 +39,12 @@ public class QuizActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate(bundle) called");
         mQuestionTextView =(TextView) findViewById(R.id.question_text_view);
 
+        //Restores old index before rotating
+        if(savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
         //Get first question
-        updateQuestion(1);
+        updateQuestion(0);
 
         //Display next question whenver the user clicks the textbox
         mQuestionTextView.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +88,14 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        Log.d(TAG, "mCurrentIndex = "+  mCurrentIndex);
+        savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart() called");
@@ -122,11 +135,11 @@ public class QuizActivity extends AppCompatActivity {
      */
     private void updateQuestion(int i){
         //loops array back to beginning if decrementing
-        if(i == -1 && mCurrentIndex == 1)
-            mCurrentIndex = mQuestionBank.length - 1;
+//        if(i == -1 && mCurrentIndex == 1)
+//            mCurrentIndex = mQuestionBank.length - 1;
 
         //increments or decrements the index
-        mCurrentIndex = (mCurrentIndex + i) % mQuestionBank.length;
+        mCurrentIndex = ((mCurrentIndex + i) + mQuestionBank.length) % mQuestionBank.length;
 
         //gets the text of the next question
         int question = mQuestionBank[mCurrentIndex].getTextResId();
