@@ -21,6 +21,7 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mNextButton;
     private ImageButton mPrevButton;
     private TextView mQuestionTextView;
+    private Button mCheatButton;
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_oceans, true),
@@ -85,6 +86,14 @@ public class QuizActivity extends AppCompatActivity {
                 updateQuestion(-1);
             }
         });
+
+        mCheatButton = (Button) findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Code here
+            }
+        });
     }
 
     @Override
@@ -134,10 +143,6 @@ public class QuizActivity extends AppCompatActivity {
      * @param i Used to determine whether or not to go to previous question or next. i can only be a -1 or 1
      */
     private void updateQuestion(int i){
-        //loops array back to beginning if decrementing
-//        if(i == -1 && mCurrentIndex == 1)
-//            mCurrentIndex = mQuestionBank.length - 1;
-
         //increments or decrements the index
         mCurrentIndex = ((mCurrentIndex + i) + mQuestionBank.length) % mQuestionBank.length;
 
