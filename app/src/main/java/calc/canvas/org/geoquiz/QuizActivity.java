@@ -1,5 +1,6 @@
 package calc.canvas.org.geoquiz;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ButtonBarLayout;
@@ -91,7 +92,9 @@ public class QuizActivity extends AppCompatActivity {
         mCheatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Code here
+                //Start activity_cheat activity
+                Intent i = new Intent(QuizActivity.this, CheatActivity.class);
+                startActivity(i);
             }
         });
     }
